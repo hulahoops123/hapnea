@@ -1,13 +1,12 @@
 <template>
-    <div v-if="isAuthenticated" class="flex flex-col items-center justify-center">
-        <div class="flex bg-cyan-700 items-center w-full p-3">
+    <div v-if="isAuthenticated" class="flex flex-col items-center overflow-scroll h-screen" ref="mainContainerElement" >
+        <div class="flex  bg-cyan-700 items-center w-full p-3">
             <p class="text-4xl font-staatliches text-neutral-300 tracking-wider">HSQUAD PB<span class="align-super ml-0.5 text-xs">s</span></p>
-            <Icon name="line-md:chevron-down-circle" class="-rotate-180 h-8 w-8 text-pink-500 ml-auto" @click="logOut">
-            </Icon>
+            <Icon name="line-md:chevron-down-circle" class="-rotate-180 h-8 w-8 text-pink-500 ml-auto" @click="logOut"></Icon>
         </div>
-        <div v-if="userData && adminData" class="flex flex-col justify-center items-center w-full overflow-y-auto h-full">
-            <div class="flex items-center justify-center text-neutral-300 w-full gap-2 bg-cyan-700 p-3 fixed">
+        <div v-if="adminData" class="flex items-center justify-center text-neutral-300 w-full gap-2 bg-cyan-700 sticky top-0 z-50">
                 <Icon name="line-md:align-center" class="text-neutral-300 h-10 w-10 "></Icon>
+                <p>{{ isScrolling }}</p>
                 <select name="categories" id="categories" class="bg-cyan-700 text-2xl font-raleway font-black"
                     v-model="chosenSort">
                     <option disabled value="">sort</option>
@@ -15,7 +14,8 @@
                     </option>
                 </select>
                 <Icon name="line-md:question-circle" class="text-neutral-400 h-7 w-7 ml-auto "></Icon>
-            </div>
+        </div>
+        <div v-if="userData && adminData" class="flex flex-col justify-center items-center w-full" >
             <UserBubble class="h-80 w-80 mb-12" :admin-data="adminData" :user-data="userData"
                 @input-changed="theInputChanged"></UserBubble>
             <div class="grid grid-cols-1">
@@ -72,6 +72,9 @@ const allUserQuery = computed(() => authenticatedUser.value && collection(firest
 const allUserData = useFirestore(allUserQuery, null);
 
 const signIn = () => signInWithPopup(auth, new GoogleAuthProvider());
+
+const mainContainerElement = ref(null);
+const { x, y, isScrolling, arrivedState, directions } = useScroll(mainContainerElement);
 
 const chosenSort = ref('');
 watch(() => [chosenSort.value, allUserData.value],
