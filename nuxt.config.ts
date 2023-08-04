@@ -4,7 +4,8 @@ export default defineNuxtConfig({
   modules:[
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
-    '@nuxtjs/google-fonts'
+    '@nuxtjs/google-fonts',
+    'nuxt-icon'
   ],
   googleFonts: {
     // display: "swap",
