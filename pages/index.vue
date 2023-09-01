@@ -1,26 +1,7 @@
-<!-- <template>
-    <div ref="mainContainerElement" class=" flex flex-col w-full h-screen  overflow-scroll bg-blue-500 ">
-        <p class=" font-raleway bg-red-500 h-96 shrink-0 ">hi mom{{ isScrolling }}</p>
-        <p class="  font-staatliches bg-red-500 h-96 shrink-0 ">hi mom{{ isScrolling }}</p>
-        <p class=" bg-red-500 h-96 shrink-0 ">hi mom{{ isScrolling }}</p>
-    </div>
-</template>
-
-<script setup>
-const mainContainerElement = ref(null);
-const { x, y, isScrolling, arrivedState, directions } = useScroll(mainContainerElement);
-
-</script>
-
-<style  scoped>
-
-</style> -->
-<!-- <template>
-    <NuxtLink to="/signin">
-      signin page
-    </NuxtLink>
-</template> -->
 <template class="overflow-x-clip">
+    <Head>
+            <Title>HSQUAD PB</Title>
+        </Head>
     <div class="wrapper z-0 absolute h-full w-full">
         <div><span class="dot"></span></div>
         <div><span class="dot"></span></div>
@@ -53,7 +34,6 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(mainContainerE
         <div v-if="adminData"
             class="flex items-center justify-center text-neutral-300 w-full gap-2 bg-blue-950/95 sticky top-0 z-50 p-3">
             <Icon name="line-md:align-center" class="text-neutral-300 h-10 w-10 "></Icon>
-            <!-- <button @click="createMulti">ceatemulti</button> -->
             <select name="categories" id="categories" class="bg-transparent text-2xl font-raleway font-black"
                 v-model="chosenSort" @change="triggerSort">
                 <option selected value="userName">name</option>
@@ -62,8 +42,8 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(mainContainerE
             <p class="flex w-full justify-start ml-4"> {{ chosenSort != 'userName' ? disciplines[chosenSort].description :
                 '' }} </p>
         </div>
-        <onClickOutside @trigger="showAdminArea = false">
-            <AdminArea v-if="showAdminArea" :admin-data="adminData" :is-authenticated="isAuthenticated"
+        <onClickOutside class="z-50" @trigger="showAdminArea = false">
+            <AdminArea class="z-50" v-if="showAdminArea" :admin-data="adminData" :is-authenticated="isAuthenticated"
                 :disciplines="disciplines" @admin-changed="newDisciplineAdded"></AdminArea>
         </onClickOutside>
 
@@ -105,9 +85,6 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(mainContainerE
                 <p class="text-blue-700">Sign In with Google</p>
                 <Icon name="logos:google-icon" class="w-8 ml-2 h-8" ></Icon>
             </div>
-        <!-- <button @click="signIn" class="ring-2">
-            Sign In with Google
-        </button> -->
     </div>
 </template>
 <script setup>
@@ -127,7 +104,7 @@ const disciplines = computed(() => adminData.value.find(({ id }) => id === 'disc
 
 const allUserQuery = computed(() => authenticatedUser.value && collection(firestore, 'users'));
 const allUserData = useFirestore(allUserQuery, null);
-const userData = computed(() => allUserData.value.find(({ userId }) => userId === authenticatedUser.value.uid), null);
+const userData = computed(() => allUserData.value && allUserData.value.find(({ userId }) => userId === authenticatedUser.value.uid), null);
 
 
 const mainContainerElement = ref(null);
@@ -135,7 +112,7 @@ const { x, y, isScrolling, arrivedState, directions } = useScroll(mainContainerE
 
 const showUserBubble = ref(false);
 const showAdminArea = ref(false);
-const isAdminUser = computed(() => authenticatedUser.value && checkadminid(), false);
+const isAdminUser = computed(() => allUserData.value && userData.value.isAdmin, false);
 
 const otherClickedUserId = ref(null);
 const elementUserinAllUsers = computed(() => authenticatedUser.value.uid);
@@ -152,18 +129,6 @@ const scrollToElement = () => {
     const el = document.getElementById(elementUserinAllUsers.value);
     if (el) {
         el.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-}
-
-function checkadminid() {
-    if (adminData.value) {
-        for (const adminItem of adminData.value) {
-            if (adminItem.hasOwnProperty("allowedUserIds")) {
-                const allowedUsers = adminItem.allowedUserIds;
-                if (allowedUsers.includes(authenticatedUser.value.uid)) return true;
-                break; // Exit the loop after finding the allowedUserIds
-            }
-        }
     }
 }
 

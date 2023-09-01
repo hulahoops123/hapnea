@@ -1,6 +1,6 @@
 <template>
     <div v-if="props.isAuthenticated"
-        class="font-raleway w-4/5 m-auto h-fit flex flex-col rounded-md ring-2 ring-blue-200 gap-2 pb-2 space-x-2 space-y-2 my-2">
+        class="font-raleway w-4/5 m-auto h-fit flex flex-col rounded-md ring-2 ring-blue-200 gap-2 pb-2 space-x-2 space-y-2 my-2 bg-neutral-100">
         <p class="text-2xl flex justify-center bg-amber-400 text-neutral-700">Admins Only 😉</p>
         <div class="grid grid-cols-4 font-bold ">
             <p>Code</p>
