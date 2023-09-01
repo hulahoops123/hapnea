@@ -9,6 +9,7 @@ export default defineNuxtConfig({
   ],
   googleFonts: {
     // display: "swap",
+    download:false,
     families: {
       'Raleway': true,
       'Staatliches':true
