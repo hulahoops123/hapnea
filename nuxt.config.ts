@@ -5,8 +5,18 @@ export default defineNuxtConfig({
     '@nuxtjs/tailwindcss',
     '@vueuse/nuxt',
     '@nuxtjs/google-fonts',
-    'nuxt-icon'
+    'nuxt-icon',
+    '@kevinmarrec/nuxt-pwa'
   ],
+  pwa: {
+    manifest: {
+      name: "HSQUAD PB",
+      short_name: "HSQUAD",
+      },
+    workbox: {
+      enabled: true
+    }
+  },
   googleFonts: {
     // display: "swap",
     download:false,

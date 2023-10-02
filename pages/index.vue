@@ -31,6 +31,11 @@
                 logOut
             </p>
         </div>
+        <div v-if="deferredPrompt" class="bg-pink-700 w-full text-neutral-200 flex z-50 justify-center items-center p-4 gap-2">
+            <p class="text-lg font-bold">Add HSQUAD to homescreen?</p>
+            <Icon name="line-md:circle-to-confirm-circle-transition" class="bg-green-800 h-12 w-12 rounded-full" @click="deferredPrompt.prompt()"></Icon>
+            <Icon name="line-md:close-circle" class="bg-red-800 h-12 w-12 rounded-full" @click="deferredPrompt = null" ></Icon>
+        </div>
         <div v-if="adminData"
             class="flex items-center justify-center text-neutral-300 w-full gap-2 bg-blue-950/95 sticky top-0 z-50 p-3">
             <Icon name="line-md:align-center" class="text-neutral-300 h-10 w-10 "></Icon>
@@ -123,6 +128,23 @@ const targetIsVisible = useElementVisibility(target);
 
 
 const chosenSort = ref('userName');
+
+const deferredPrompt = ref(null);
+onMounted(() => {
+    window.addEventListener('beforeinstallprompt', e => {
+        console.log('heko');
+        e.preventDefault();
+        deferredPrompt.value = e;
+    });
+    window.addEventListener("appinstalled", () => {
+        console.log('hello');
+      deferredPrompt.value = null;
+    });
+});
+
+
+
+
 
 
 const scrollToElement = () => {

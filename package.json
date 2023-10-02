@@ -9,6 +9,7 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@kevinmarrec/nuxt-pwa": "^0.17.0",
     "@nuxt/devtools": "latest",
     "@nuxtjs/tailwindcss": "^6.7.0",
     "@types/node": "^18",
